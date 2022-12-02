@@ -1,4 +1,5 @@
 mod day1;
+mod day2;
 
 fn main() {
     println!(
@@ -8,5 +9,10 @@ fn main() {
     println!(
         "Day 1, part 2: {}",
         day1::part2::find_three_elves_with_most_calories()
+    );
+
+    println!(
+        "Day 2, part 1: {}",
+        day2::part1::calculate_score_of_strategy_guide().unwrap()
     );
 }
