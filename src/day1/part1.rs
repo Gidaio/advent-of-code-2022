@@ -4,7 +4,7 @@ use std::io::BufRead;
 
 // The basic idea of the algorithm is to just run through the file one line at
 // a time, keeping track of the biggest value we've seen. At the end, return it!
-pub fn day1_part1() -> usize {
+pub fn find_elf_with_most_calories() -> usize {
     let file = fs::File::open("inputs/day1.txt").unwrap();
     let buf_reader = io::BufReader::new(file);
 
