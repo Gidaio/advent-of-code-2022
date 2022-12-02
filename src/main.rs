@@ -15,4 +15,8 @@ fn main() {
         "Day 2, part 1: {}",
         day2::part1::calculate_score_of_strategy_guide().unwrap()
     );
+    println!(
+        "Day 2, part 2: {}",
+        day2::part2::calculate_score_of_strategy_guide().unwrap()
+    );
 }
