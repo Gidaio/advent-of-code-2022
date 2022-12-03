@@ -16,7 +16,7 @@ pub fn get_priority_of_incorrect_items() -> io::Result<usize> {
         let line = line?;
         let compartment_size = line.len() / 2;
         let first_compartment = &line[0..compartment_size];
-        
+
         let mut unique_items: HashSet<u8> = HashSet::new();
         for character in first_compartment.bytes() {
             unique_items.insert(character);
