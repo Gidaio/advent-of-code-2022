@@ -61,3 +61,26 @@ own error types and `Box`ed them up dynamically into a `Result` so I could also 
 errors. Then I realized I could use the `mod.rs` file in each folder to hold things that were
 common to both solutions, which made a lot of sense for this one because there was more of that
 than in the previous two days.
+
+## Day 4
+
+The problem itself today was pretty simple. Parsing it was easy, and verifying it was easy, so I
+won't comment too much on that. Mostly, I used today to experiment `impl` blocks on `struct`s. This
+makes the actual called function super small. It essentially boils down to
+
+```rust
+Pair::new(&line).overlaps()
+```
+
+(I omitted some `?`s and stuff for legibility.)
+
+One thing that is really cool about Rust is that you can have multiple `impl` blocks for the same
+`struct`. In the `mod.rs` file for today, I included `Pair::new`, which just parses the line into a
+`Pair` object. Because each part has a different objective, though, `part1.rs` and `part2.rs` both
+have another `impl` block for `Pair`, adding `Pair.subset` and `Pair.overlaps`, respectively. Super
+cool. Rust has a _lot_ of really neat features.
+
+I also tried using an error `enum` today instead of just a bunch of structs. If it makes semantic
+sense, it's a really good way to reduce boilerplate code. You only need to implement
+`std::fmt::Display` and `std::error::Error` once for the whole enum, rather than once per error
+type. Good stuff.
