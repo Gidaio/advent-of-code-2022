@@ -1,6 +1,7 @@
 mod day1;
 mod day2;
 mod day3;
+mod day4;
 
 fn main() {
     println!(
@@ -26,7 +27,9 @@ fn main() {
         day3::part1::get_priority_of_incorrect_items().unwrap()
     );
     println!(
-        "Day 3, part 2: {}",
+        "Day 3, part 2: {}\n",
         day3::part2::get_priority_of_team_badges().unwrap()
     );
+
+    println!("Day 4, part 1: {}", day4::part1::find_subsets().unwrap());
 }
