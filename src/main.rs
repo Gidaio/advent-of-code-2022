@@ -32,4 +32,5 @@ fn main() {
     );
 
     println!("Day 4, part 1: {}", day4::part1::find_subsets().unwrap());
+    println!("Day 4, part 2: {}", day4::part2::find_overlaps().unwrap());
 }
