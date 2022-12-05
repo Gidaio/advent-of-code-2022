@@ -2,6 +2,7 @@ mod day1;
 mod day2;
 mod day3;
 mod day4;
+mod day5;
 
 fn main() {
     println!(
@@ -32,5 +33,10 @@ fn main() {
     );
 
     println!("Day 4, part 1: {}", day4::part1::find_subsets().unwrap());
-    println!("Day 4, part 2: {}", day4::part2::find_overlaps().unwrap());
+    println!("Day 4, part 2: {}\n", day4::part2::find_overlaps().unwrap());
+
+    println!(
+        "Day 5, part 1: {}",
+        day5::part1::get_tops_of_stacks().unwrap()
+    );
 }
