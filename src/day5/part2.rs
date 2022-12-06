@@ -1,10 +1,11 @@
 use std::fs;
 use std::io::{self, BufRead};
+use std::time;
 
 use super::*;
 
 impl UnloadSpace {
-    fn do_move_9001(&mut self, move_to_do: &Move) -> Result<()> {
+    fn do_move_9001(&mut self, move_to_do: &Move) -> BoxedResult<()> {
         if move_to_do.from >= STACK_COUNT {
             return Err(MoveError::BadFromStack(move_to_do.from).into());
         }
@@ -34,7 +35,9 @@ impl UnloadSpace {
     }
 }
 
-pub fn get_tops_of_stacks_for_9001() -> Result<String> {
+pub fn get_tops_of_stacks_for_9001() -> TimedResult<String> {
+    let start = time::Instant::now();
+
     let mut unload_space = UnloadSpace::new();
     let file = fs::File::open("inputs/day5.txt")?;
     let reader = io::BufReader::new(file);
@@ -55,5 +58,5 @@ pub fn get_tops_of_stacks_for_9001() -> Result<String> {
         }
     }
 
-    Ok(result)
+    Ok((result, start.elapsed()))
 }

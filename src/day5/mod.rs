@@ -1,10 +1,10 @@
-pub mod part1;
-pub mod part2;
-
 use std::error;
 use std::fmt;
 
-type Result<T> = std::result::Result<T, Box<dyn error::Error>>;
+use crate::{BoxedResult, TimedResult};
+
+pub mod part1;
+pub mod part2;
 
 const STACK_COUNT: usize = 9;
 
@@ -38,7 +38,7 @@ struct Move {
 }
 
 impl Move {
-    fn from_str(line: &str) -> Result<Self> {
+    fn from_str(line: &str) -> BoxedResult<Self> {
         let mut line_parts = line.split_whitespace();
 
         let mut quantity: usize = 0;

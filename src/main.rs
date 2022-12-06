@@ -1,8 +1,16 @@
+use std::error;
+use std::fmt;
+use std::result;
+use std::time;
+
 mod day1;
 mod day2;
 mod day3;
 mod day4;
 mod day5;
+
+type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
+type TimedResult<T> = BoxedResult<(T, time::Duration)>;
 
 fn main() {
     println!(
@@ -37,10 +45,17 @@ fn main() {
 
     println!(
         "Day 5, part 1: {}",
-        day5::part1::get_tops_of_stacks().unwrap()
+        format_timed_result(day5::part1::get_tops_of_stacks())
     );
     println!(
         "Day 5, part 2: {}",
-        day5::part2::get_tops_of_stacks_for_9001().unwrap()
+        format_timed_result(day5::part2::get_tops_of_stacks_for_9001())
     );
+}
+
+fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
+    match result {
+        Ok((value, duration)) => format!("{} (in {} ms)", value, duration.as_millis()),
+        Err(error) => format!("Errored: {}", error),
+    }
 }
