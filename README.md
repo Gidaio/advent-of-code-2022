@@ -30,7 +30,7 @@ scissors. That would open the doors for some fun modular arithmetic for calculat
 I decided against it because it felt more "idiomatic" to represent the states as an enum and branch
 off of that. I think it would be more efficient to do it numerically, though.
 
-I also tried to make a greater effort of using `Results`. It's not great, and there were some areas
+I also tried to make a greater effort of using `Result`s. It's not great, and there were some areas
 where I didn't quite know how to handle it, but it's there!
 
 ## Day 3
@@ -104,3 +104,20 @@ that explains that `for` loops borrow the iterator for the entire duration of th
 just while (internally) calling `.next`. Fortunately, it gave a good alternative: the `while let`
 loop! Which is essentially exactly what I wanted, though not _quite_ identical. (Replies to the
 post list at least one main difference.)
+
+## Day 6
+
+This one was fun! I usually look at these when they're released, but that's 9:00 PM my time, so
+unless it's a weekend, I let my brain mull it over until lunch at work the next day. I eventually
+settled on a sliding-window approach and it worked first try! I'm very happy with it. On my machine
+it runs in "0" ms.
+
+Basically, the way the algorithm works is by keeping track of the start and end points of the
+window. When a new character is added to the window, the algorithm checks the new character against
+every other character in the window for a duplicate. If a duplicate is found, the start position of
+the window is updated to be the position immediately after the duplicate character. Because there
+was a duplicate in that range, immediately after it is the soonest place the packet marker could
+start. Once the window has expanded to size 4, we've found the packet marker.
+
+Since it was a sliding window algorithm, doing part 2 was trivial: just increase the size of the
+window from 4 to 14. Worked a charm.

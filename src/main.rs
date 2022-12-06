@@ -55,7 +55,11 @@ fn main() {
 
     println!(
         "Day 6, part 1: {}",
-        format_timed_result(day6::part1::find_start_of_packet())
+        format_timed_result(day6::part1::find_start_of_packet_marker())
+    );
+    println!(
+        "Day 6, part 2: {}",
+        format_timed_result(day6::part2::find_start_of_message_marker())
     );
 }
 
