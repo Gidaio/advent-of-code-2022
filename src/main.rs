@@ -39,4 +39,8 @@ fn main() {
         "Day 5, part 1: {}",
         day5::part1::get_tops_of_stacks().unwrap()
     );
+    println!(
+        "Day 5, part 2: {}",
+        day5::part2::get_tops_of_stacks_for_9001().unwrap()
+    );
 }

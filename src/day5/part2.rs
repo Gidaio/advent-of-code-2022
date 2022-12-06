@@ -4,7 +4,7 @@ use std::io::{self, BufRead};
 use super::*;
 
 impl UnloadSpace {
-    fn do_move(&mut self, move_to_do: &Move) -> Result<()> {
+    fn do_move_9001(&mut self, move_to_do: &Move) -> Result<()> {
         if move_to_do.from >= STACK_COUNT {
             return Err(MoveError::BadFromStack(move_to_do.from).into());
         }
@@ -17,9 +17,16 @@ impl UnloadSpace {
             return Err(MoveError::NotEnoughCrates(move_to_do.from).into());
         }
 
+        let mut buffer: Vec<char> = Vec::with_capacity(move_to_do.quantity);
+
         for _ in 0..move_to_do.quantity {
             // Unwrap is fine here because I've already verified that it exists.
             let value = self.stacks[move_to_do.from].pop().unwrap();
+            buffer.push(value);
+        }
+
+        for _ in 0..move_to_do.quantity {
+            let value = buffer.pop().unwrap();
             self.stacks[move_to_do.to].push(value);
         }
 
@@ -27,7 +34,7 @@ impl UnloadSpace {
     }
 }
 
-pub fn get_tops_of_stacks() -> Result<String> {
+pub fn get_tops_of_stacks_for_9001() -> Result<String> {
     let mut unload_space = UnloadSpace::new();
     let file = fs::File::open("inputs/day5.txt")?;
     let reader = io::BufReader::new(file);
@@ -37,7 +44,7 @@ pub fn get_tops_of_stacks() -> Result<String> {
     for line in lines {
         let line = line?;
         let move_to_do = Move::from_str(&line)?;
-        unload_space.do_move(&move_to_do)?;
+        unload_space.do_move_9001(&move_to_do)?;
     }
 
     let mut result = String::with_capacity(STACK_COUNT);
