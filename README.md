@@ -84,3 +84,23 @@ I also tried using an error `enum` today instead of just a bunch of structs. If 
 sense, it's a really good way to reduce boilerplate code. You only need to implement
 `std::fmt::Display` and `std::error::Error` once for the whole enum, rather than once per error
 type. Good stuff.
+
+## Day 5
+
+I decided early on that parsing out the initial state was not worth it. Because it's arranged
+vertically and not horizontally, it's not really conducive to being read from a file. It would be a
+nightmare of state and grossness, and so I though, "Hey. Nothing says I _have_ to read it from a
+file." So I didn't.
+
+My big new discovery today was `while let` loops. In day 3, I wrote a `loop` that called `.next` on
+the iterator once, then decided to break if that was `None`. If it was `Some`, then there _should_
+be two more lines, and I called `.next` twice more, instead erroring if they returned `None`. I
+realized this could be done easier. The `for` loop should theoretically handle the first case, and
+then I could just call `.next` twice more to get the extra lines. Unfortunately, that doesn't work.
+
+I ended up finding
+[this Reddit post](https://www.reddit.com/r/rust/comments/2pqcgt/while_let_someitem_iteratornext/)
+that explains that `for` loops borrow the iterator for the entire duration of the loop, rather than
+just while (internally) calling `.next`. Fortunately, it gave a good alternative: the `while let`
+loop! Which is essentially exactly what I wanted, though not _quite_ identical. (Replies to the
+post list at least one main difference.)
