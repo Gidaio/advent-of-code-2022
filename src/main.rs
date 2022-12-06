@@ -8,6 +8,7 @@ mod day2;
 mod day3;
 mod day4;
 mod day5;
+mod day6;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -48,8 +49,13 @@ fn main() {
         format_timed_result(day5::part1::get_tops_of_stacks())
     );
     println!(
-        "Day 5, part 2: {}",
+        "Day 5, part 2: {}\n",
         format_timed_result(day5::part2::get_tops_of_stacks_for_9001())
+    );
+
+    println!(
+        "Day 6, part 1: {}",
+        format_timed_result(day6::part1::find_start_of_packet())
     );
 }
 
