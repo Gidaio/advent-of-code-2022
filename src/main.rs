@@ -9,6 +9,7 @@ mod day3;
 mod day4;
 mod day5;
 mod day6;
+mod day7;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -58,8 +59,13 @@ fn main() {
         format_timed_result(day6::part1::find_start_of_packet_marker())
     );
     println!(
-        "Day 6, part 2: {}",
+        "Day 6, part 2: {}\n",
         format_timed_result(day6::part2::find_start_of_message_marker())
+    );
+
+    println!(
+        "Day 7, part 1: {}",
+        format_timed_result(day7::part1::find_directory_sizes())
     );
 }
 
