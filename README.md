@@ -121,3 +121,92 @@ start. Once the window has expanded to size 4, we've found the packet marker.
 
 Since it was a sliding window algorithm, doing part 2 was trivial: just increase the size of the
 window from 4 to 14. Worked a charm.
+
+## Day 7.
+
+Holy heck. This one was quite the rabbit hole.
+
+I started by trying to build a tree where every node held a reference to its parent. It looked
+something like:
+
+```rust
+struct Node<'node> {
+    children: Vec<Node<'node>>,
+    parent: Option<&'node Node<'node>>,
+}
+```
+
+The idea was that every node would own its children, and have a reference to its parent. I ran into
+trouble when updating things, though. Adding a new node to the array of children worked great, but
+then modifying that child to point back to the parent couldn't be done because I'd already
+transferred ownership of the child to the parent.
+
+```rust
+self.current_node.children.push(new_node);
+new_node.parent = &self.current_node;
+```
+
+I tried instead setting the parent _through_ the parent again, but that didn't work. It's weirdly
+circular and I'm not surprised it doesn't work, but I still don't understand _exactly_ why. My best
+guess is that I'm borrowing the value twice, once on each side of the `=`? Or that it makes a
+circular reference, and now Rust doesn't know how to handle it when it tries to clean it up.
+
+```rust
+self.current_node.children.push(new_node);
+let inserted_index = self.current_node.children.len() - 1;
+self.current_node.children[inserted_index].parent = &self.current_node;
+```
+
+My last try was basically reversing the first try, setting the parent first and then adding it to
+the children, but that gave me a lifetimes error. So I was completely stumped.
+
+It turns out
+[this is basically just unsafe](https://stackoverflow.com/questions/28608823/how-to-model-complex-recursive-data-structures-graphs).
+Instead, you should be using `Rc<>` and `RefCell<>`! So here's my best explanation as to how they
+work.
+
+`Rc<>` allows more than one thing to own a value. It does this by reference counting. `Rc::clone`
+doesn't _actually_ clone the value, but it does increase the number of references to the value.
+Then, when the newly created `Rc<>` goes out of scope, the `Drop` implementation reduces that count
+by 1 and, if the number of things referencing it are now 0, frees the value itself. Why is this
+helpful? Essentially, every node owns its children _and_ its parent. Rust doesn't have to untangle
+the circular referencing anymore, because _when_ the value should be freed is figured out at
+runtime.
+
+The values in `Rc<>` aren't mutable, however. This is fine for a lot of things, but what if we do
+need the value to be mutable? That's where `RefCell<>` comes in, Essentially, `RefCell<>` switches
+from statically enforcing Rust's borrow rules at compile time to _dynamically_ enforcing them at
+_runtime_.
+
+If you've ever heard phrases like "turing completeness" and the "Halting Problem", you've probably
+at least grazed the surface of one of the most weirdly fascinating things in computer science: some
+things aren't just unknown, but have been proven to be unknowable. This also extends to mathematics
+in general (check out Godel's Incompleteness Theorem), but the gist is that there are some things
+that you cannot write a program for. One of those things is that the correctness of code cannot be
+verified.
+
+Well that's weird. Rust claims to do that! What gives? There are a couple of caveats to this
+statement. The first is that the correctness of code cannot be verified for _turing complete_
+languages. What does it mean to be turing complete? Essentially, it means that the language is
+capable of calculating anything that can be calculated. Remember, not everything _can_ be
+calculated or known, but for the things that can, a turing complete language can do it. There are
+simpler languages (look up Chomsky's hierarchy) for which correctness can be verified, but they
+cannot calculate anything calculable.
+
+The second caveat is that the correctness of code cannot be verified _in the general case_. That
+means there are no algorithms that can verify the correctness of an arbitrary piece of code. The
+reality is, though, that most code isn't arbitrary. There are classes of things that we developers
+do with code, and a lot of them are pretty well understood. This is why Rust works the way it does:
+it's borrow checker rules are really good at verifying the correctness of the most commons pieces
+of code. Those common pieces happen to just be a subset turing completeness, but that's fine. They
+still do what we need them to.
+
+So! Back to `RefCell<>`. Sometimes, what you need to do in code transcends the bounds of static
+borrow checking. Doing borrow checking at runtime sort of extends the realm of what's possible. It
+turns out most graph theory stuff lies outside the bounds of static borrow checking, but inside the
+bounds of dynamic borrow checking. This is why `RefCell<>` ultimately solved my issue.
+
+There are still things outside the realm of dynamic borrow checking, and for that, Rust provides
+`unsafe`. I haven't done much with that (except some
+[very poorly written OpenGL stuff](https://github.com/Gidaio/opengl-renderer-rust)), so I'm not
+gonna talk about it.
