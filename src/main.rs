@@ -67,6 +67,10 @@ fn main() {
         "Day 7, part 1: {}",
         format_timed_result(day7::part1::find_directory_sizes())
     );
+    println!(
+        "Day 7, part 2: {}",
+        format_timed_result(day7::part2::find_directory_to_delete())
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
