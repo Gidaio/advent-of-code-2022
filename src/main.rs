@@ -11,6 +11,7 @@ mod day5;
 mod day6;
 mod day7;
 mod day8;
+mod day9;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -78,8 +79,13 @@ fn main() {
         format_timed_result(day8::part1::count_visible_trees())
     );
     println!(
-        "Day 8, part 2: {}",
+        "Day 8, part 2: {}\n",
         format_timed_result(day8::part2::get_best_scenic_score())
+    );
+
+    println!(
+        "Day 9, part 1, {}",
+        format_timed_result(day9::part1::count_unique_tail_positions())
     );
 }
 
