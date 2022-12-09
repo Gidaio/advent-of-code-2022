@@ -10,6 +10,7 @@ mod day4;
 mod day5;
 mod day6;
 mod day7;
+mod day8;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -68,8 +69,13 @@ fn main() {
         format_timed_result(day7::part1::find_directory_sizes())
     );
     println!(
-        "Day 7, part 2: {}",
+        "Day 7, part 2: {}\n",
         format_timed_result(day7::part2::find_directory_to_delete())
+    );
+
+    println!(
+        "Day 8, part 1: {}",
+        format_timed_result(day8::part1::count_visible_trees())
     );
 }
 
