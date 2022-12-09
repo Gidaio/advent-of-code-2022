@@ -77,6 +77,10 @@ fn main() {
         "Day 8, part 1: {}",
         format_timed_result(day8::part1::count_visible_trees())
     );
+    println!(
+        "Day 8, part 2: {}",
+        format_timed_result(day8::part2::get_best_scenic_score())
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
