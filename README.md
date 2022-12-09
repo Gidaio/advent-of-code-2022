@@ -122,7 +122,7 @@ start. Once the window has expanded to size 4, we've found the packet marker.
 Since it was a sliding window algorithm, doing part 2 was trivial: just increase the size of the
 window from 4 to 14. Worked a charm.
 
-## Day 7.
+## Day 7
 
 Holy heck. This one was quite the rabbit hole.
 
@@ -210,3 +210,36 @@ There are still things outside the realm of dynamic borrow checking, and for tha
 `unsafe`. I haven't done much with that (except some
 [very poorly written OpenGL stuff](https://github.com/Gidaio/opengl-renderer-rust)), so I'm not
 gonna talk about it.
+
+## Day 8
+
+This was stark contrast to yesterday. It was very, very straightforward. I get the feeling that
+there's a more optimal way to do these problems, but I couldn't think of one and was already
+running a little behind. Could I have abstracted this code more? Sure. Sometimes, though, it's nice
+to just do it the straightforward way.
+
+I did take the opportunity to explore iterators a little bit more. Specifically, I learned the
+difference between `.iter`, `.iter_mut`, and `.into_iter`.
+
+`.iter` takes a reference to a collection and returns an iterator over references to the items in
+that collection.
+
+```rust
+let item: Option<&Tree> = Vec::<Tree>::new().iter().next();
+```
+
+`.iter_mut`, predictably, takes a mutable reference to a collection and returns an iterator over
+mutable references to the items in that collection.
+
+```rust
+let item: Option<&mut Tree> = Vec::<Tree>::new().iter_mut().next();
+```
+
+`.into_iter` is a little different. It actually takes ownership of a collection and returns an
+iterator straight-up over the items in that collection. Once you use this method, you can't use the
+original collection again; the iterator now has ownership of the values. Supposedly, this is what
+`for ... in` loops "call" internally, but I haven't experimentally confirmed this.
+
+```rust
+let item: Option<Tree> = Vec::<Tree>::new().into_iter().next();
+```
