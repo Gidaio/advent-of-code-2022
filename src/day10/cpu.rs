@@ -1,6 +1,8 @@
 use std::error::Error;
 use std::fmt;
 
+use super::*;
+
 pub trait Peripheral {
     fn new() -> Self;
     fn update(&mut self, register_x: isize, clock_cycle: usize);
@@ -26,7 +28,7 @@ impl<T: Peripheral> CPU<T> {
         self.peripheral.update(self.register_x, self.clock_cycle);
     }
 
-    pub fn execute_instruction(&mut self, instruction: Instruction) {
+    fn execute_instruction(&mut self, instruction: Instruction) {
         match instruction {
             Instruction::AddX(amount) => {
                 self.increment_clock();
@@ -35,6 +37,18 @@ impl<T: Peripheral> CPU<T> {
             }
             Instruction::NoOp => self.increment_clock(),
         }
+    }
+
+    pub fn execute_file(&mut self, path: &str) -> BoxedResult<()> {
+        let file = File::open(path)?;
+        let reader = BufReader::new(file);
+
+        for line in reader.lines() {
+            let instruction = Instruction::try_from(line?)?;
+            self.execute_instruction(instruction);
+        }
+
+        Ok(())
     }
 }
 

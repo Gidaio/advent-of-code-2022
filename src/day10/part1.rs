@@ -1,7 +1,3 @@
-use std::fs::File;
-use std::io::{BufRead, BufReader};
-use std::time::Instant;
-
 use super::*;
 
 struct SignalStrength {
@@ -20,17 +16,11 @@ impl Peripheral for SignalStrength {
     }
 }
 
-pub fn calculate_sum_of_signal_strengths() -> crate::TimedResult<isize> {
+pub fn calculate_sum_of_signal_strengths() -> TimedResult<isize> {
     let start_time = Instant::now();
 
-    let file = File::open("inputs/day10.txt")?;
-    let reader = BufReader::new(file);
     let mut cpu = CPU::<SignalStrength>::new();
-
-    for line in reader.lines() {
-        let instruction = Instruction::try_from(line?)?;
-        cpu.execute_instruction(instruction);
-    }
+    cpu.execute_file("inputs/day10.txt")?;
 
     Ok((cpu.peripheral.signal_strength, start_time.elapsed()))
 }
