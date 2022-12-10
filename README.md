@@ -243,3 +243,35 @@ original collection again; the iterator now has ownership of the values. Suppose
 ```rust
 let item: Option<Tree> = Vec::<Tree>::new().into_iter().next();
 ```
+
+## Day 9
+
+I really enjoyed this one! I started just super straightforward: a `Rope` struct with a `head` and
+a `tail`. I made a `Point` struct that wrapped up an (x, y) pair to be easier to work with, and
+then just did some basic if statements to work out part 1. Super simple.
+
+Then I looked at part 2 and realized it was basically asking for a "discrete" forward kinematics
+simulation. So instead of a `Rope` being modeled as a head and a tail, it was now modeled as a
+`position` and then the `next` segment of the rope, which was just an `Option<Box<Rope>>`. (This
+didn't need to be a `Rc<RefCell<Rope>>` because segments didn't need a reference to their parent.
+Ownership was strictly one-way.)
+
+Each segment would move, and then if it's child was too far away, instruct its child to move. This
+was repeated recursively, turtles-all-the-way-down style. Because I was passing directions around,
+and those directions could be diagonal, I decided to expand my `Point` struct into a partial
+`Vector2` implementation. (It only has `Sub` and `AddAssign` traits.)
+
+I initially modeled the logic as a series of 9 `else if` statements, one for each of the nine
+regions the child segment could be in. Eventually, I realized that as long as the child segment was
+at least 2 units away in either direction, then the child moved the distance "clamped" to one. So
+if the parent was `(2, -1)` away from the child, the child moved `(1, -1)`. But if the parent was
+`(0, 2)` away, the child only moved `(0, 1)`, and if the parent was `(-1, 0)` away, then the child
+didn't move. Does that make sense? I dunno. It's very elegant in the code, though.
+
+Each segment kept track of the positions it'd been. (I could've had each segment have an
+`Option<HashSet>`, but I didn't want to track all of that.) At the end, to get the tail's
+positions, I just dug down recursively until I found the tail segment (the one that didn't have a
+child) and returned it back up.
+
+To sum up, this challenge was fun not because the solution was immediate, but because the code sort
+of "crunched itself down" over time into something that I'm really proud of.
