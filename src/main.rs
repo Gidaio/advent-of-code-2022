@@ -87,6 +87,10 @@ fn main() {
         "Day 9, part 1, {}",
         format_timed_result(day9::part1::count_unique_tail_positions())
     );
+    println!(
+        "Day 9, part 2: {}",
+        format_timed_result(day9::part2::count_unique_long_tail_positions())
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
