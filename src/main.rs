@@ -12,6 +12,7 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -84,12 +85,17 @@ fn main() {
     );
 
     println!(
-        "Day 9, part 1, {}",
+        "Day 9, part 1: {}",
         format_timed_result(day9::part1::count_unique_tail_positions())
     );
     println!(
-        "Day 9, part 2: {}",
+        "Day 9, part 2: {}\n",
         format_timed_result(day9::part2::count_unique_long_tail_positions())
+    );
+
+    println!(
+        "Day 10, part 1: {}",
+        format_timed_result(day10::part1::calculate_sum_of_signal_strengths())
     );
 }
 
