@@ -4,7 +4,6 @@ use std::result;
 use std::time;
 
 mod day1;
-mod day10;
 mod day2;
 mod day3;
 mod day4;
@@ -13,6 +12,8 @@ mod day6;
 mod day7;
 mod day8;
 mod day9;
+mod day10;
+mod day11;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -100,9 +101,14 @@ fn main() {
     println!("Day 10, part 2:");
     let day10_part2_result = day10::part2::print_crt();
     match day10_part2_result {
-        Ok((_, duration)) => println!("Took {} ms", duration.as_millis()),
-        Err(error) => println!("Errored: {}", error),
+        Ok((_, duration)) => println!("Took {} ms\n", duration.as_millis()),
+        Err(error) => println!("Errored: {}\n", error),
     }
+
+    println!(
+        "Day 11, part 1: {}",
+        format_timed_result(day11::part1::calculate_monkey_business())
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
