@@ -2,7 +2,7 @@ use super::*;
 
 #[derive(Debug)]
 pub struct Monkey {
-    items: Vec<usize>,
+    pub items: Vec<usize>,
     operation: MonkeyOperation,
     test: MonkeyTest,
 }
@@ -17,7 +17,6 @@ impl Monkey {
             MissingLineType::StartingItems,
         ))??;
         // Skip "  Starting items: ", then split the rest on commas.
-        println!("Starting items: {}", &starting_items_line[18..]);
         let item_strs = starting_items_line[18..].split(", ");
         let items = item_strs
             .map(|item| item.parse::<usize>())
@@ -36,6 +35,43 @@ impl Monkey {
             operation,
             test,
         })
+    }
+
+    pub fn inspect_own_items(&mut self) -> Vec<(usize, usize)> {
+        let out_vec = self
+            .items
+            .iter()
+            .map(|item| self.inspect_item(*item))
+            .collect();
+        self.items.clear();
+
+        out_vec
+    }
+
+    fn inspect_item(&self, item: usize) -> (usize, usize) {
+        let mut sides: [usize; 2] = [0, 0];
+        match self.operation.left {
+            Value::Old => sides[0] = item,
+            Value::Const(value) => sides[0] = value,
+        }
+
+        match self.operation.right {
+            Value::Old => sides[1] = item,
+            Value::Const(value) => sides[1] = value,
+        }
+
+        let result = match self.operation.operation {
+            MathOperation::Add => sides[0] + sides[1],
+            MathOperation::Multiply => sides[0] * sides[1],
+        } / 3;
+
+        let target = if result % self.test.modulus == 0 {
+            self.test.true_target
+        } else {
+            self.test.false_target
+        };
+
+        (target, result)
     }
 }
 
