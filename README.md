@@ -275,3 +275,48 @@ child) and returned it back up.
 
 To sum up, this challenge was fun not because the solution was immediate, but because the code sort
 of "crunched itself down" over time into something that I'm really proud of.
+
+## Day 10
+
+This one wasn't too hard. I've [done some VM stuff before](https://github.com/Gidaio/lox-rs), so I
+kind of knew my way around. The interesting thing I explored today was traits! Since each part
+needed the core CPU, but did different things with the register and clock count, I decided to make
+a `Peripheral` trait. This included a `::new` function so the CPU could create it, and an `.update`
+method that was called each clock cycle. The cool part is when defining CPU, it's defined as a
+generic that satisfies a trait:
+
+```rust
+struct CPU<T: Peripheral> { ... }
+```
+
+There was an actual type being passed in, so I didn't have to initialize the peripheral outside of
+the CPU and pass it in, I could have the CPU initialize the peripheral itself! Super cool stuff.
+
+## Day 11
+
+I wasn't as big a fan of this one. Most of it just kind of felt like pointless busywork? There were
+two things I liked about this challenge, though.
+
+The first was the expression parsing. Each monkey had an "Operation", like `new = old * 4` or
+`new = old + old`. Parsing that out and executing it was pretty interesting, and involved a lot of
+the skills I learned/am learning in [Crafting Interpreters](http://craftinginterpreters.com/). I
+basically modeled it as a very bad stack machine, but since all of the expressions only had two
+terms/factors, I just allocated a 2-item array in-place.
+
+The second was the little shortcut I found for part 2. Essentially, part 2 is just part 1, but
+bigger. You simulate for 10,000 rounds instead of 20, and remove the 1/3 damping parameter. The
+numbers get real big real fast. The first time I ran it it panicked.
+
+The first thing that came to mind was just using a `BigInt` style interface. Rust doesn't have that
+natively like (modern) JavaScript does. There are crates that do it, but I really want to write all
+the code for this year myself, which means I'd have to implement it myself. That sounded like no
+fun, and I was tempted to just not do part 2.
+
+Then I realized: the actual worry values for the items aren't used. They're only there to keep
+track of which monkey to throw the item to. Modular arithmetic to the rescue! The only property of
+the number we need to maintain is the divisibility by a modulus. That property is preserved if you
+modulo the number, as long as the new modulus is also divisible by the old modulus. All I had to do
+was multiply the moduli of all the monkeys together to get a big modulus that will preserve
+divisibility for all the monkeys' individual moduli. By this point, I was so tired of the challenge
+that I just hacked it in manually rather than keeping track and setting the "big modulus" on all
+the monkeys.
