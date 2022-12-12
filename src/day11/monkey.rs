@@ -37,18 +37,18 @@ impl Monkey {
         })
     }
 
-    pub fn inspect_own_items(&mut self) -> Vec<(usize, usize)> {
+    pub fn inspect_own_items(&mut self, divisor: usize) -> Vec<(usize, usize)> {
         let out_vec = self
             .items
             .iter()
-            .map(|item| self.inspect_item(*item))
+            .map(|item| self.inspect_item(*item, divisor))
             .collect();
         self.items.clear();
 
         out_vec
     }
 
-    fn inspect_item(&self, item: usize) -> (usize, usize) {
+    fn inspect_item(&self, item: usize, divisor: usize) -> (usize, usize) {
         let mut sides: [usize; 2] = [0, 0];
         match self.operation.left {
             Value::Old => sides[0] = item,
@@ -63,7 +63,7 @@ impl Monkey {
         let result = match self.operation.operation {
             MathOperation::Add => sides[0] + sides[1],
             MathOperation::Multiply => sides[0] * sides[1],
-        } / 3;
+        } / divisor;
 
         let target = if result % self.test.modulus == 0 {
             self.test.true_target
@@ -71,7 +71,7 @@ impl Monkey {
             self.test.false_target
         };
 
-        (target, result)
+        (target, result % 9699690)
     }
 }
 
