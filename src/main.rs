@@ -119,6 +119,10 @@ fn main() {
         "Day 12, part 1: {}",
         format_timed_result(day12::part1::find_best_path_length()),
     );
+    println!(
+        "Day 12, part 2: {}",
+        format_timed_result(day12::part2::find_most_scenic_path_length()),
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
