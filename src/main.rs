@@ -14,6 +14,7 @@ mod day8;
 mod day9;
 mod day10;
 mod day11;
+mod day12;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -110,8 +111,13 @@ fn main() {
         format_timed_result(day11::part1::calculate_calm_monkey_business())
     );
     println!(
-        "Day 11, part 2: {}",
+        "Day 11, part 2: {}\n",
         format_timed_result(day11::part2::calculate_anxious_monkey_business())
+    );
+
+    println!(
+        "Day 12, part 1: {}",
+        format_timed_result(day12::part1::find_best_path_length()),
     );
 }
 
