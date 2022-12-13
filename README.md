@@ -320,3 +320,8 @@ was multiply the moduli of all the monkeys together to get a big modulus that wi
 divisibility for all the monkeys' individual moduli. By this point, I was so tired of the challenge
 that I just hacked it in manually rather than keeping track and setting the "big modulus" on all
 the monkeys.
+
+## Day 12
+
+Not much to say about this one. It was a pretty straightforward path-finding algorithm. I decided
+A* would be overkill, so I just went with Dijkstra.
