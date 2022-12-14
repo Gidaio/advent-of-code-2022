@@ -3,6 +3,10 @@ use std::fmt;
 use std::result;
 use std::time;
 
+use crate::timing::time_function;
+
+mod timing;
+
 mod day1;
 mod day2;
 mod day3;
@@ -15,6 +19,7 @@ mod day9;
 mod day10;
 mod day11;
 mod day12;
+mod day13;
 
 type BoxedResult<T> = result::Result<T, Box<dyn error::Error>>;
 type TimedResult<T> = BoxedResult<(T, time::Duration)>;
@@ -120,8 +125,13 @@ fn main() {
         format_timed_result(day12::part1::find_best_path_length()),
     );
     println!(
-        "Day 12, part 2: {}",
+        "Day 12, part 2: {}\n",
         format_timed_result(day12::part2::find_most_scenic_path_length()),
+    );
+
+    println!(
+        "Day 13, part 1: {}",
+        time_function(day13::part1::find_pairs_in_correct_order),
     );
 }
 
