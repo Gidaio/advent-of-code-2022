@@ -1,0 +1,34 @@
+# Absolutely raw.
+list := "[" "]"
+list := "[" one-or-more-list-items "]"
+
+one-or-more-list-items := list-item
+one-or-more-list-items := list-item "," one-or-more-list-items
+
+list-item := list
+list-item := integer
+
+integer := digit
+integer := digit integer
+
+digit := "0"
+digit := "1"
+digit := "2"
+digit := "3"
+digit := "4"
+digit := "5"
+digit := "6"
+digit := "7"
+digit := "8"
+digit := "9"
+
+# With alternation
+list := "[" "]" | "[" one-or-more-list-items "]"
+
+one-or-more-list-items := list-item | list-item "," one-or-more-list-items
+
+list-item := list | integer
+
+integer := digit | digit integer
+
+digit := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"

@@ -133,6 +133,10 @@ fn main() {
         "Day 13, part 1: {}",
         time_function(day13::part1::find_pairs_in_correct_order),
     );
+    println!(
+        "Day 13, part 2: {}",
+        time_function(day13::part2::locate_divider_packets),
+    );
 }
 
 fn format_timed_result<T: fmt::Display>(result: TimedResult<T>) -> String {
